@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Master Python in 21 Days — KNUST Bootcamp</title>
+<meta name="description" content="Join the ultimate 21-day Python Bootcamp for KNUST EE students. Live sessions, hands-on coding, and real projects.">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0A0E1A;--blue:#0B4FD8;--cyan:#00C2FF;
+  --gold:#FFB800;--white:#FFFFFF;--light:#E8EDF8;
+  --gray:#8A95B0;--dark-card:rgba(15,20,40,0.85);
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--navy);
+  font-family:'DM Sans',sans-serif;
+  color:var(--light);
+  overflow-x:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* ── Utility ── */
+.container{width:100%;max-width:720px;margin:0 auto;padding:0 20px}
+
+/* ── Animated BG particles ── */
+.particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.particles span{
+  position:absolute;width:3px;height:3px;border-radius:50%;
+  background:var(--cyan);opacity:0;
+  animation:floatUp linear infinite;
+}
+@keyframes floatUp{
+  0%{opacity:0;transform:translateY(100vh) scale(.5)}
+  10%{opacity:.6}
+  90%{opacity:.6}
+  100%{opacity:0;transform:translateY(-10vh) scale(1.2)}
+}
+
+/* ── Reveal on scroll ── */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(0.16, 1, 0.3, 1),transform .8s cubic-bezier(0.16, 1, 0.3, 1)}
+@media(min-width:900px){
+  .reveal.slide-left{transform:translateX(-60px) translateY(0)}
+  .reveal.slide-right{transform:translateX(60px) translateY(0)}
+}
+.reveal.visible{opacity:1;transform:translate(0,0) !important}
+
+/* ── Top Nav ── */
+.top-nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(10,14,26,.85);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(0,194,255,.1);
+  padding:12px 20px;display:flex;align-items:center;justify-content:space-between;
+  transition:box-shadow .3s;
+}
+.top-nav.scrolled{box-shadow:0 4px 30px rgba(0,0,0,.5)}
+.top-nav .logo{
+  display:flex;align-items:center;height:40px;
+}
+.top-nav .logo img{height:100%;width:auto;border-radius:4px;}
+.nav-cta{
+  background:var(--gold);color:var(--navy);font-weight:700;font-size:12px;
+  padding:8px 18px;border:none;border-radius:20px;cursor:pointer;
+  letter-spacing:.5px;text-transform:uppercase;
+  transition:transform .2s,box-shadow .2s;text-decoration:none;
+}
+.nav-cta:hover{transform:scale(1.05);box-shadow:0 4px 20px rgba(255,184,0,.4)}
+
+/* ── Hero ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;padding:100px 20px 40px;
+  position:relative;z-index:1;
+}
+.hero-eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--cyan);letter-spacing:3px;text-transform:uppercase;
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.hero-eyebrow::before{
+  content:'';width:24px;height:2px;background:var(--cyan);
+  animation:pulse-line 2s ease-in-out infinite;
+}
+@keyframes pulse-line{0%,100%{opacity:.4}50%{opacity:1}}
+
+.hero-headline{
+  font-family:'Outfit',sans-serif;font-size:clamp(52px,13vw,96px);
+  line-height:1.05;color:var(--white);letter-spacing:1px;font-weight:800;
+}
+.hero-headline .highlight{
+  color:var(--cyan);display:block;
+  background:linear-gradient(90deg,var(--cyan),#6ee7ff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-sub{margin-top:16px;font-size:clamp(15px,4vw,18px);color:var(--gray);font-weight:500}
+.hero-sub strong{color:var(--gold)}
+
+.hero-tag{
+  display:inline-block;margin-top:20px;
+  background:var(--gold);color:var(--navy);font-weight:700;
+  font-size:11px;padding:6px 14px;border-radius:4px;
+  letter-spacing:1px;text-transform:uppercase;
+  animation:glow-tag 2s ease-in-out infinite alternate;
+}
+@keyframes glow-tag{0%{box-shadow:0 0 8px rgba(255,184,0,.2)}100%{box-shadow:0 0 20px rgba(255,184,0,.5)}}
+
+/* ── Image showcase ── */
+.image-showcase{
+  position:relative;z-index:1;padding:0 20px 60px;
+}
+.image-showcase .img-wrap{
+  position:relative;border-radius:16px;overflow:hidden;
+  border:1px solid rgba(0,194,255,.15);
+  box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 80px rgba(0,194,255,.08);
+  transition:transform .4s ease,box-shadow .4s ease;
+}
+.image-showcase .img-wrap:hover{
+  transform:translateY(-8px) scale(1.02);
+  box-shadow:0 30px 80px rgba(0,0,0,.8),0 0 120px rgba(0,194,255,.2);
+}
+.image-showcase img{width:100%;display:block}
+.img-caption{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:20px;
+  background:linear-gradient(transparent,rgba(10,14,26,.95));
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);
+  letter-spacing:1px;
+}
+
+/* ── Urgency banner ── */
+.urgency{
+  margin:0 20px 40px;padding:18px 20px;
+  background:linear-gradient(135deg,rgba(0,194,255,.08),rgba(11,79,216,.12));
+  border:1px solid rgba(0,194,255,.2);border-left:4px solid var(--cyan);
+  border-radius:8px;position:relative;z-index:1;
+}
+.urgency p{font-size:14px;line-height:1.7;color:var(--light)}
+.urgency strong{color:var(--white)}
+
+/* ── Section titles ── */
+.section-title{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:3px;text-transform:uppercase;color:var(--cyan);
+  margin-bottom:20px;display:flex;align-items:center;gap:10px;
+}
+.section-title::before{content:'';width:20px;height:2px;background:var(--cyan)}
+
+/* ── Cards grid ── */
+.cards-section{padding:40px 20px;position:relative;z-index:1}
+.cards-grid{display:grid;grid-template-columns:1fr;gap:16px}
+
+.card{
+  background:var(--dark-card);backdrop-filter:blur(10px);
+  border:1px solid rgba(0,194,255,.1);border-radius:12px;
+  padding:20px;position:relative;overflow:hidden;
+  transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease;
+}
+.card:active,.card:hover{
+  transform:translateY(-2px);border-color:rgba(0,194,255,.3);
+  box-shadow:0 10px 40px rgba(0,0,0,.4);
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.card:hover::before,.card:active::before{opacity:1}
+
+.card-icon{font-size:28px;margin-bottom:10px}
+.card-title{font-weight:700;font-size:15px;color:var(--white);margin-bottom:4px}
+.card-desc{font-size:13px;color:var(--gray);line-height:1.5}
+
+/* ── Learn list ── */
+.learn-section{padding:20px 20px 40px;position:relative;z-index:1}
+.learn-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.learn-list li{
+  padding:14px 16px;font-size:14px;color:var(--light);
+  border:1px solid rgba(255,255,255,.05);border-radius:10px;
+  background:rgba(15,20,40,.6);display:flex;align-items:center;gap:12px;
+  transition:background .3s,border-color .3s,transform .2s;
+}
+.learn-list li:active{transform:scale(.98);background:rgba(0,194,255,.06);border-color:rgba(0,194,255,.2)}
+.learn-list li:hover{background:rgba(0,194,255,.06);border-color:rgba(0,194,255,.2)}
+.learn-list li .li-icon{
+  width:32px;height:32px;border-radius:8px;
+  background:rgba(11,79,216,.25);border:1px solid rgba(0,194,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;
+}
+
+/* ── Tutor badge ── */
+.tutor-section{padding:0 20px 40px;position:relative;z-index:1}
+.tutor-card{
+  background:linear-gradient(135deg,rgba(255,184,0,.08),rgba(255,184,0,.02));
+  border:1px solid rgba(255,184,0,.2);border-radius:12px;
+  padding:24px;text-align:center;
+  transition:transform .3s,box-shadow .3s;
+}
+.tutor-card:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(255,184,0,.1)}
+.tutor-emoji{font-size:40px;margin-bottom:8px}
+.tutor-title{
+  font-family:'Outfit',sans-serif;font-size:24px;font-weight:800;
+  color:var(--gold);letter-spacing:1px;line-height:1.2;
+}
+.tutor-desc{font-size:13px;color:var(--gray);margin-top:6px;line-height:1.5}
+
+/* ── Countdown / Stats ── */
+.stats-row{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  padding:0 20px 40px;position:relative;z-index:1;
+}
+.stat{
+  text-align:center;padding:18px 10px;
+  background:var(--dark-card);border-radius:12px;
+  border:1px solid rgba(0,194,255,.1);
+}
+.stat-num{
+  font-family:'Outfit',sans-serif;font-size:42px;font-weight:800;
+  color:var(--cyan);line-height:1;
+}
+.stat-label{font-size:10px;color:var(--gray);margin-top:4px;text-transform:uppercase;letter-spacing:1px}
+
+/* ── CTA Section ── */
+.cta{
+  margin:0 20px 40px;padding:28px 24px;
+  background:linear-gradient(135deg,var(--blue),#0633a8);
+  border-radius:14px;position:relative;z-index:1;overflow:hidden;
+}
+.cta::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,194,255,.1),transparent);
+}
+.cta-inner{position:relative;z-index:1}
+.price-from{font-size:11px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1px}
+.price-amount{
+  font-family:'Outfit',sans-serif;font-size:52px;font-weight:800;
+  color:var(--white);line-height:1;margin:4px 0;
+}
+.price-note{font-size:12px;color:var(--cyan);margin-bottom:20px}
+
+.cta-btn{
+  display:block;width:100%;padding:16px;
+  background:var(--gold);color:var(--navy);
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;
+  border:none;border-radius:10px;cursor:pointer;
+  letter-spacing:.5px;text-transform:uppercase;
+  transition:transform .2s,box-shadow .2s;
+}
+.cta-btn:active{transform:scale(.97)}
+.cta-btn:hover{transform:scale(1.02);box-shadow:0 6px 30px rgba(255,184,0,.4)}
+
+.cta-contact{
+  margin-top:16px;text-align:center;
+}
+.cta-contact .how{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:6px}
+.wa-number{
+  font-family:'JetBrains Mono',monospace;font-size:15px;
+  color:var(--white);font-weight:700;
+}
+.qr-box{
+  width:64px;height:64px;background:var(--white);border-radius:6px;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:8px;color:var(--navy);font-weight:700;
+  font-family:'JetBrains Mono',monospace;text-align:center;
+  margin:10px auto 0;line-height:1.3;
+}
+
+/* ── Footer ── */
+.footer{
+  padding:20px;text-align:center;
+  border-top:1px solid rgba(0,194,255,.08);
+  position:relative;z-index:1;
+}
+.footer p{font-size:11px;color:var(--gray);line-height:1.6}
+.footer strong{color:var(--cyan)}
+.footer .open{color:var(--gold);font-weight:700;display:block;margin-top:4px}
+
+/* ── Typing code animation ── */
+.typing-code{
+  margin:0 20px 40px;padding:18px;
+  background:rgba(10,14,26,.9);border:1px solid rgba(0,194,255,.12);
+  border-radius:10px;font-family:'JetBrains Mono',monospace;
+  font-size:12px;line-height:1.8;color:#8be9fd;
+  position:relative;z-index:1;overflow:hidden;
+}
+.typing-code .line{opacity:0;transform:translateX(-10px);animation:typeIn .5s forwards}
+.typing-code .comment{color:#6272a4}
+.typing-code .keyword{color:#ff79c6}
+.typing-code .string{color:#f1fa8c}
+.typing-code .func{color:#50fa7b}
+.typing-code .var{color:#8be9fd}
+.typing-code .dot-cursor{
+  display:inline-block;width:8px;height:16px;background:var(--cyan);
+  animation:blink 1s step-end infinite;vertical-align:middle;margin-left:2px;
+}
+@keyframes typeIn{to{opacity:1;transform:translateX(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ── Desktop breakpoints ── */
+@media(min-width:600px){
+  .cards-grid{grid-template-columns:1fr 1fr}
+  .hero{padding:120px 40px 60px}
+  .container{padding:0 40px}
+  .image-showcase,.urgency,.cards-section,.learn-section,
+  .tutor-section,.stats-row,.cta,.typing-code{margin-left:auto;margin-right:auto;max-width:720px}
+}
+
+@media(min-width:900px){
+  .desktop-split{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    min-height:100vh;
+    max-width:1100px;
+    margin:0 auto;
+    padding:100px 40px 40px;
+    gap:50px;
+  }
+  .hero{
+    min-height:auto;
+    align-items:flex-start;
+    text-align:left;
+    padding:0;
+    flex:1.1;
+  }
+  .image-showcase{
+    flex:0.9;
+    padding:0;
+  }
+  .hero-headline{font-size:80px; width:100%; line-height:1.05;}
+  .hero-sub{margin-left:0; margin-right:0;}
+  .hero-eyebrow{justify-content:flex-start;}
+  .hero-eyebrow::before{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- Floating particles -->
+<div class="particles" id="particles" aria-hidden="true"></div>
+
+<!-- Fixed Nav -->
+<nav class="top-nav" id="topNav">
+  <a href="#" class="logo"><img src="bootcamp_logo.png" alt="Python Bootcamp Logo"></a>
+  <a href="#register" class="nav-cta">Register Now</a>
+</nav>
+
+<!-- ════ HERO SPLIT ════ -->
+<div class="desktop-split">
+  <!-- ════ HERO ════ -->
+  <section class="hero" id="hero">
+    <div class="hero-eyebrow reveal slide-left">Python Bootcamp · Cohort 01</div>
+    <h1 class="hero-headline reveal slide-left" style="transition-delay: 0.1s">
+      Master<br>
+      <span class="highlight">Python</span>
+      in 21 Days
+    </h1>
+    <p class="hero-sub reveal slide-left" style="transition-delay: 0.2s">
+      Start <strong>before</strong> the semester starts.
+    </p>
+    <span class="hero-tag reveal slide-left" style="transition-delay: 0.3s">KNUST · EE Students & Beyond · 2025</span>
+  </section>
+
+  <!-- ════ IMAGE ════ -->
+  <section class="image-showcase reveal slide-right">
+    <div class="img-wrap">
+      <img src="python_desktop_2.png" alt="Python code on a modern desktop screen" loading="lazy">
+      <div class="img-caption">// Real code. Real skills. Real projects.</div>
+    </div>
+  </section>
+</div>
+
+<!-- ════ TYPING CODE ════ -->
+<div class="typing-code reveal" id="typingCode">
+  <div class="line" style="animation-delay:.1s"><span class="comment"># Your journey starts here</span></div>
+  <div class="line" style="animation-delay:.4s"><span class="keyword">class</span> <span class="func">Engineer</span>:</div>
+  <div class="line" style="animation-delay:.7s">&nbsp;&nbsp;<span class="keyword">def</span> <span class="func">train</span>(self):</div>
+  <div class="line" style="animation-delay:1s">&nbsp;&nbsp;&nbsp;&nbsp;self.level = <span class="string">"pro"</span></div>
+  <div class="line" style="animation-delay:1.3s">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">"Ready for semester"</span><span class="dot-cursor"></span></div>
+</div>
+
+<!-- ════ URGENCY ════ -->
+<section class="urgency reveal">
+  <p>Don't meet Python <strong>for the first time in class.</strong> EE students who code early finish stronger — get ahead now, stay ahead all semester.</p>
+</section>
+
+<!-- ════ STATS ════ -->
+<div class="stats-row reveal">
+  <div class="stat">
+    <div class="stat-num" id="statDays">21</div>
+    <div class="stat-label">Days</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" id="statSessions">9</div>
+    <div class="stat-label">Sessions</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" id="statProjects">3</div>
+    <div class="stat-label">Projects</div>
+  </div>
+</div>
+
+<!-- ════ WHAT YOU'LL LEARN ════ -->
+<section class="learn-section reveal">
+  <div class="section-title">What You'll Learn</div>
+  <ul class="learn-list">
+    <li><span class="li-icon">🐍</span> Python from absolute scratch</li>
+    <li><span class="li-icon">🛠️</span> Write & debug real code</li>
+    <li><span class="li-icon">🧠</span> Problem-solving with logic</li>
+    <li><span class="li-icon">📦</span> OOP — Classes & Objects</li>
+    <li><span class="li-icon">⚙️</span> Engineering-style thinking</li>
+  </ul>
+</section>
+
+<!-- ════ PROGRAM DETAILS ════ -->
+<section class="cards-section reveal">
+  <div class="section-title">Program Details</div>
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon">📅</div>
+      <div class="card-title">April 29 – May 19, 2025</div>
+      <div class="card-desc">3 weeks · Live sessions</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎙️</div>
+      <div class="card-title">3 Live Sessions / Week</div>
+      <div class="card-desc">Interactive, not pre-recorded</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">💻</div>
+      <div class="card-title">Hands-On Every Session</div>
+      <div class="card-desc">You build, not just watch</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📝</div>
+      <div class="card-title">Weekly Assignments</div>
+      <div class="card-desc">Graded tasks to reinforce each week</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ TUTOR ════ -->
+<section class="tutor-section reveal">
+  <div class="tutor-card">
+    <div class="tutor-emoji">🎯</div>
+    <div class="tutor-title">Patient · Strategic · Tutors</div>
+    <div class="tutor-desc">Meeting you at your level. Zero judgment. We make Python click.</div>
+  </div>
+</section>
+
+<!-- ════ CTA ════ -->
+<section class="cta reveal" id="register">
+  <div class="cta-inner">
+    <div class="price-from">Starting from</div>
+    <div class="price-amount">GH₵100</div>
+    <div class="price-note">⚠ Limited slots — secure yours now</div>
+    <button class="cta-btn" onclick="window.open('https://wa.me/233551374703','_blank')">
+      Register via WhatsApp →
+    </button>
+    <div class="cta-contact">
+      <div class="how">or WhatsApp directly:</div>
+      <div class="wa-number">+233 55137 4703</div>
+      <div class="qr-box">QR<br>CODE<br>HERE</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FOOTER ════ -->
+<footer class="footer reveal">
+  <p>Primary: <strong>KNUST EE Students</strong> · Open to all</p>
+  <span class="open">🔓 All disciplines welcome</span>
+</footer>
+
+<script>
+// ── Particles ──
+(function(){
+  const c=document.getElementById('particles');
+  for(let i=0;i<30;i++){
+    const s=document.createElement('span');
+    s.style.left=Math.random()*100+'%';
+    s.style.animationDuration=(6+Math.random()*10)+'s';
+    s.style.animationDelay=(Math.random()*8)+'s';
+    s.style.width=s.style.height=(1+Math.random()*3)+'px';
+    c.appendChild(s);
+  }
+})();
+
+// ── Scroll reveal ──
+const reveals=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+},{threshold:.15});
+reveals.forEach(el=>obs.observe(el));
+
+// ── Nav scroll effect ──
+window.addEventListener('scroll',()=>{
+  document.getElementById('topNav').classList.toggle('scrolled',window.scrollY>40);
+});
+
+// ── Counter animation ──
+function animateCount(el,target,duration){
+  let start=0;const step=timestamp=>{
+    if(!start)start=timestamp;
+    const p=Math.min((timestamp-start)/duration,1);
+    el.textContent=Math.floor(p*target);
+    if(p<1)requestAnimationFrame(step);
+  };requestAnimationFrame(step);
+}
+const statObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      animateCount(document.getElementById('statDays'),21,800);
+      animateCount(document.getElementById('statSessions'),9,800);
+      animateCount(document.getElementById('statProjects'),3,600);
+      statObs.disconnect();
+    }
+  });
+},{threshold:.5});
+statObs.observe(document.querySelector('.stats-row'));
+
+// ── Typing code re-trigger on scroll ──
+const codeObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.line').forEach(l=>{
+        l.style.animation='none';l.offsetHeight;l.style.animation='';
+      });
+    }
+  });
+},{threshold:.5});
+codeObs.observe(document.getElementById('typingCode'));
+</script>
+</body>
+</html>
